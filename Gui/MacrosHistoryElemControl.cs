@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace MacrosApp
@@ -44,6 +38,12 @@ namespace MacrosApp
         {
             get { return Convert.ToInt32(uiCountTextBox.Text); }
             set { uiCountTextBox.Text = value.ToString(); }
+        }
+
+        public string TypeText
+        {
+            get { return uiTypeLabel.Text; }
+            set { uiTypeLabel.Text = value; }
         }
     }
 }
