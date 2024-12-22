@@ -1,3 +1,5 @@
+using MacrosApp.Gui;
+
 namespace MacrosApp;
 
 static class Program

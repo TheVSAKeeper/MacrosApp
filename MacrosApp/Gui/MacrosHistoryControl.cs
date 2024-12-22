@@ -1,126 +1,152 @@
 ﻿using MacrosApp.Core;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
 
-namespace MacrosApp
+namespace MacrosApp.Gui;
+
+public partial class MacrosHistoryControl : UserControl
 {
-    public partial class MacrosHistoryControl : UserControl
+    private readonly Dictionary<MouseButtons, string> _mouseButtons;
+    private int _currentId;
+
+    public MacrosHistoryControl()
     {
-        private int _currentId = 0;
-        private Dictionary<MouseButtons, string> _mouseButtons;
-        public MacrosHistoryControl()
-        {
-            InitializeComponent();
-            _mouseButtons = new Dictionary<MouseButtons, string>
-            {
-                { MouseButtons.Left, "l" },
-                { MouseButtons.Right, "r" }
-            };
-        }
+        InitializeComponent();
 
-        public void AddAction(MyAction action)
+        _mouseButtons = new Dictionary<MouseButtons, string>
         {
-            _currentId++;
+            { MouseButtons.Left, "l" },
+            { MouseButtons.Right, "r" },
+        };
+    }
 
-            var item = new MacrosHistoryElemControl();
-            item.Count = action.Count;
-            item.Delay = action.Delay;
-            item.Tag = _currentId.ToString();
-            item.Left = 0;
-            item.Top = (_currentId - 1) * item.Height;
-            item.TypeText = action.TypeText;
-            if (action is MouseAction)
-            {
-                var mouseAction = (MouseAction)action;
+    public void AddAction(MyAction action)
+    {
+        _currentId++;
+
+        MacrosHistoryElemControl item = new();
+        item.Count = action.Count;
+        item.Delay = action.Delay;
+        item.Tag = _currentId.ToString();
+        item.Left = 0;
+        item.Top = (_currentId - 1) * item.Height;
+        item.TypeText = action.TypeText;
+
+        switch (action)
+        {
+            case MouseAction mouseAction:
                 item.X = mouseAction.X;
                 item.Y = mouseAction.Y;
                 item.Button = _mouseButtons[mouseAction.Button];
-            }
-            else if (action is KeyboardAction)
-            {
-                var keyboardAction = (KeyboardAction)action;
+                break;
+
+            case KeyboardAction keyboardAction:
                 item.Button = keyboardAction.KeyValue.ToString();
+                break;
+
+            default:
+                throw new Exception("unrecognized type");
+        }
+
+        panel1.Controls.Add(item);
+    }
+
+    public void ClearActions()
+    {
+        panel1.Controls.Clear();
+        _currentId = 0;
+    }
+
+    public List<MyAction> GetActions()
+    {
+        MouseAction mouseHint = new();
+        List<MyAction> actions = new();
+
+        foreach (Control control in panel1.Controls)
+        {
+            if (control is not MacrosHistoryElemControl historyElemControl)
+            {
+                continue;
+            }
+
+            MyAction myAction;
+
+            if (historyElemControl.TypeText == mouseHint.TypeText)
+            {
+                MouseAction action = new()
+                {
+                    X = historyElemControl.X,
+                    Y = historyElemControl.Y,
+                    Button = _mouseButtons.Single(x => x.Value == historyElemControl.Button).Key,
+                };
+
+                myAction = action;
             }
             else
             {
-                throw new Exception("unrecognized type");
-            }
-
-            panel1.Controls.Add(item);
-        }
-
-        public void ClearActions()
-        {
-            panel1.Controls.Clear();
-            _currentId = 0;
-        }
-
-        public List<MyAction> GetActions()
-        {
-            var mouseHint = new MouseAction();
-            var actions = new List<MyAction>();
-            foreach (Control control in panel1.Controls)
-            {
-                var historyElemControl = control as MacrosHistoryElemControl;
-                if (historyElemControl != null)
+                KeyboardAction action = new()
                 {
-                    MyAction myAction;
-                    if (historyElemControl.TypeText == mouseHint.TypeText)
-                    {
-                        var action = new MouseAction();
-                        action.X = historyElemControl.X;
-                        action.Y = historyElemControl.Y;
-                        action.Button = _mouseButtons.Single(x => x.Value == historyElemControl.Button).Key;
-                        myAction = action;
-                    }
-                    else
-                    {
-                        var action = new KeyboardAction();
-                        action.KeyValue = Int32.Parse(historyElemControl.Button);
-                        myAction = action;
-                    }
+                    KeyValue = int.Parse(historyElemControl.Button),
+                };
 
-                    myAction.Count = historyElemControl.Count;
-                    myAction.Delay = historyElemControl.Delay;
-                    actions.Add(myAction);
-                }
+                myAction = action;
             }
-            return actions;
+
+            myAction.Count = historyElemControl.Count;
+            myAction.Delay = historyElemControl.Delay;
+            actions.Add(myAction);
         }
 
-        private void uiSaveButton_Click(object sender, EventArgs e)
-        {
-            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
-            {
-                return;
-            }
-            var actions = GetActions();
+        return actions;
+    }
 
-            string filename = saveFileDialog1.FileName;
-            JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects };
-            string jsonString = JsonConvert.SerializeObject(actions, settings);
-            System.IO.File.WriteAllText(filename, jsonString);
+    private void uiSaveButton_Click(object sender, EventArgs e)
+    {
+        if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
+        {
+            return;
         }
 
-        private void uiLoadButton_Click(object sender, EventArgs e)
-        {
-            if (openFileDialog1.ShowDialog() == DialogResult.Cancel)
-            {
-                return;
-            }
+        List<MyAction> actions = GetActions();
 
-            string filename = openFileDialog1.FileName;
-            string fileText = System.IO.File.ReadAllText(filename);
-            JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects };
-            var actions = JsonConvert.DeserializeObject<MyAction[]>(fileText, settings);
-            ClearActions();
-            foreach (var action in actions)
-            {
-                AddAction(action);
-            }
+        string filename = saveFileDialog1.FileName;
+
+        JsonSerializerSettings settings = new()
+        {
+            TypeNameHandling = TypeNameHandling.Objects,
+        };
+
+        string jsonString = JsonConvert.SerializeObject(actions, settings);
+        File.WriteAllText(filename, jsonString);
+    }
+
+    private void uiLoadButton_Click(object sender, EventArgs e)
+    {
+        if (openFileDialog1.ShowDialog() == DialogResult.Cancel)
+        {
+            return;
+        }
+
+        string filename = openFileDialog1.FileName;
+        string fileText = File.ReadAllText(filename);
+
+        JsonSerializerSettings settings = new()
+        {
+            TypeNameHandling = TypeNameHandling.Objects,
+        };
+
+        MyAction[]? actions = JsonConvert.DeserializeObject<MyAction[]>(fileText, settings);
+
+        if (actions == null)
+        {
+            MessageBox.Show("Не удалось десериализовать действия.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+
+        ClearActions();
+
+        foreach (MyAction action in actions)
+        {
+            AddAction(action);
         }
     }
 }

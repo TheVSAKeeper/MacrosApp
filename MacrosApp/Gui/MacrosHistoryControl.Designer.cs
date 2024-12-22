@@ -1,4 +1,4 @@
-﻿namespace MacrosApp
+﻿namespace MacrosApp.Gui
 {
     partial class MacrosHistoryControl
     {
