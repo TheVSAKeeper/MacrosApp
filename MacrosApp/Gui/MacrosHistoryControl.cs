@@ -5,47 +5,18 @@ namespace MacrosApp.Gui;
 
 public partial class MacrosHistoryControl : UserControl
 {
-    private readonly Dictionary<MouseButtons, string> _mouseButtons;
-    private int _currentId;
-
     public MacrosHistoryControl()
     {
         InitializeComponent();
-
-        _mouseButtons = new Dictionary<MouseButtons, string>
-        {
-            { MouseButtons.Left, "l" },
-            { MouseButtons.Right, "r" },
-        };
     }
 
     public void AddAction(MyAction action)
     {
-        _currentId++;
-
         MacrosHistoryElemControl item = new();
-        item.Count = action.Count;
-        item.Delay = action.Delay;
-        item.Tag = _currentId.ToString();
+        action.FillHistoryElement(item);
+
         item.Left = 0;
-        item.Top = (_currentId - 1) * item.Height;
-        item.TypeText = action.TypeText;
-
-        switch (action)
-        {
-            case MouseAction mouseAction:
-                item.X = mouseAction.X;
-                item.Y = mouseAction.Y;
-                item.Button = _mouseButtons[mouseAction.Button];
-                break;
-
-            case KeyboardAction keyboardAction:
-                item.Button = keyboardAction.KeyValue.ToString();
-                break;
-
-            default:
-                throw new Exception("unrecognized type");
-        }
+        item.Top = panel1.Controls.Count * item.Height;
 
         panel1.Controls.Add(item);
     }
@@ -53,13 +24,11 @@ public partial class MacrosHistoryControl : UserControl
     public void ClearActions()
     {
         panel1.Controls.Clear();
-        _currentId = 0;
     }
 
     public List<MyAction> GetActions()
     {
-        MouseAction mouseHint = new();
-        List<MyAction> actions = new();
+        List<MyAction> actions = [];
 
         foreach (Control control in panel1.Controls)
         {
@@ -68,31 +37,11 @@ public partial class MacrosHistoryControl : UserControl
                 continue;
             }
 
-            MyAction myAction;
-
-            if (historyElemControl.TypeText == mouseHint.TypeText)
+            if (historyElemControl.Tag is not MyAction myAction)
             {
-                MouseAction action = new()
-                {
-                    X = historyElemControl.X,
-                    Y = historyElemControl.Y,
-                    Button = _mouseButtons.Single(x => x.Value == historyElemControl.Button).Key,
-                };
-
-                myAction = action;
-            }
-            else
-            {
-                KeyboardAction action = new()
-                {
-                    KeyValue = int.Parse(historyElemControl.Button),
-                };
-
-                myAction = action;
+                continue;
             }
 
-            myAction.Count = historyElemControl.Count;
-            myAction.Delay = historyElemControl.Delay;
             actions.Add(myAction);
         }
 

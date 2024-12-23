@@ -23,7 +23,7 @@ public partial class MacrosHistoryElemControl : UserControl
 
     public double Delay
     {
-        get => Convert.ToDouble(delayTextBox.Text);
+        get => Convert.ToDouble(delayTextBox.Text, CultureInfo.InvariantCulture);
         set => delayTextBox.Text = value.ToString(CultureInfo.InvariantCulture);
     }
 

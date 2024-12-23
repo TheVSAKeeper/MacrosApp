@@ -1,19 +1,11 @@
 ﻿using MacrosApp.Core;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace MacrosApp.Gui;
 
 internal partial class MainForm : Form
 {
-    private const int MOUSEEVENTF_LEFTDOWN = 0x02;
-    private const int MOUSEEVENTF_LEFTUP = 0x04;
-    private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
-    private const int MOUSEEVENTF_RIGHTUP = 0x10;
+    private readonly UserActivityHook _actHook = new();
 
-    private const uint WM_KEYDOWN = 0x0100;
-
-    private UserActivityHook _actHook;
     private int _lastMouseX;
     private int _lastMouseY;
 
@@ -26,6 +18,16 @@ internal partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
+
+        Load += OnFormLoad;
+        FormClosing += OnFormClosing;
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        base.Dispose(disposing);
+        Load -= OnFormLoad;
+        FormClosing -= OnFormClosing;
     }
 
     private void MouseMoved(object? sender, MouseEventArgs e)
@@ -34,7 +36,7 @@ internal partial class MainForm : Form
 
         if (e.Clicks > 0)
         {
-            LogWrite("MouseButton 	- " + e.Button);
+            LogWrite("MouseButton", e.Button.ToString());
 
             if (_isStartMacros)
             {
@@ -56,19 +58,19 @@ internal partial class MainForm : Form
         _lastMouseY = e.Y;
     }
 
-    private void MyKeyDown(object? sender, KeyEventArgs e)
+    private void OnKeyDown(object? sender, KeyEventArgs e)
     {
-        LogWrite("KeyDown 	- " + e.KeyData);
+        LogWrite("KeyDown", e.KeyData.ToString());
     }
 
-    private void MyKeyPress(object? sender, KeyPressEventArgs e)
+    private void OnKeyPress(object? sender, KeyPressEventArgs e)
     {
-        LogWrite("KeyPress 	- " + e.KeyChar);
+        LogWrite("KeyPress", e.KeyChar.ToString());
     }
 
-    private void MyKeyUp(object? sender, KeyEventArgs e)
+    private void OnKeyUp(object? sender, KeyEventArgs e)
     {
-        LogWrite("KeyUp 		- " + e.KeyData);
+        LogWrite("KeyUp", e.KeyData.ToString());
 
         if (_isStartMacros && e.KeyCode != Keys.W)
         {
@@ -147,36 +149,23 @@ internal partial class MainForm : Form
         _actHook.Stop();
     }
 
-    private void MainFormLoad(object sender, EventArgs e)
+    private void OnFormLoad(object? sender, EventArgs e)
     {
-        _actHook = new UserActivityHook();
-
         _actHook.OnMouseActivity += MouseMoved;
-        _actHook.KeyDown += MyKeyDown;
-        _actHook.KeyPress += MyKeyPress;
-        _actHook.KeyUp += MyKeyUp;
+        _actHook.KeyDown += OnKeyDown;
+        _actHook.KeyPress += OnKeyPress;
+        _actHook.KeyUp += OnKeyUp;
     }
 
-    private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+    private void OnFormClosing(object? sender, FormClosingEventArgs e)
     {
         _actHook.OnMouseActivity -= MouseMoved;
-        _actHook.KeyDown -= MyKeyDown;
-        _actHook.KeyPress -= MyKeyPress;
-        _actHook.KeyUp -= MyKeyUp;
+        _actHook.KeyDown -= OnKeyDown;
+        _actHook.KeyPress -= OnKeyPress;
+        _actHook.KeyUp -= OnKeyUp;
 
         _actHook.Stop();
     }
-
-    [LibraryImport("user32.dll")]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
-    private static partial void mouse_event(long dwFlags, long dx, long dy, long cButtons, long dwExtraInfo);
-
-    [LibraryImport("user32.dll")]
-    private static partial IntPtr GetForegroundWindow();
-
-    [LibraryImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool PostMessage(IntPtr hWnd, uint Msg, int wParam, int lParam);
 
     private void GoScriptTwoStepWithShift()
     {
@@ -184,8 +173,8 @@ internal partial class MainForm : Form
         int step2Count = Convert.ToInt32(uiStep2CountTextBox.Text);
         int shift = Convert.ToInt32(uiStep1ShiftCountTextBox.Text);
         int shift2 = Convert.ToInt32(uiStep2ShiftCountTextBox.Text);
-        double delay = Convert.ToDouble(uiDelayTextBox.Text);
-        double every = Convert.ToDouble(uiShiftEveryTextBox.Text);
+        int delay = Convert.ToInt32(uiDelayTextBox.Text);
+        int every = Convert.ToInt32(uiShiftEveryTextBox.Text);
         int mouseMoveClickDelay = Convert.ToInt32(mouseMoveClickDelayTextBox.Text);
 
         for (int iStep1 = 0; iStep1 < step1Count; iStep1++)
@@ -196,28 +185,28 @@ internal partial class MainForm : Form
                 {
                     if (_isBreak)
                     {
+                        // TODO: return; ?
                         break;
                     }
 
-                    MyAction myAction2 = _myActions[iAction];
-
-                    switch (myAction2)
+                    switch (_myActions[iAction])
                     {
                         case MouseAction myAction:
-                            int x = myAction.X;
-                            int y = myAction.Y;
 
                             if ((iAction + 1) % every == 0)
                             {
-                                x = x + iStep2 * shift + iStep1 * shift;
-                                y = y + iStep2 * shift2 * -1 + iStep1 * shift2;
+                                myAction = myAction with
+                                {
+                                    X = myAction.X + iStep2 * shift + iStep1 * shift,
+                                    Y = myAction.Y + iStep2 * shift2 * -1 + iStep1 * shift2,
+                                };
                             }
 
-                            GoScriptMouseClick(myAction.Delay, myAction.Button, x, y, mouseMoveClickDelay, delay);
+                            myAction.Perform(mouseMoveClickDelay, delay, LogWrite);
                             break;
 
                         case KeyboardAction myAction:
-                            KeyboardCLick(delay, myAction);
+                            myAction.Perform(delay, log: LogWrite);
                             break;
                     }
                 }
@@ -232,7 +221,7 @@ internal partial class MainForm : Form
         int mouseMoveClickDelay = Convert.ToInt32(mouseMoveClickDelayTextBox.Text);
         int x = _lastMouseX;
         int y = _lastMouseY;
-        int step = 32;
+        int step;
 
         if (uiDerevoRadioButton.Checked)
         {
@@ -242,6 +231,10 @@ internal partial class MainForm : Form
         {
             step = Convert.ToInt32(uiKuricaKormShiftTextBox.Text);
         }
+        else
+        {
+            step = 32;
+        }
 
         for (int iStep1 = 0; iStep1 < step1Count; iStep1++)
         {
@@ -249,12 +242,19 @@ internal partial class MainForm : Form
             {
                 if (_isBreak)
                 {
+                    // TODO: return; ?
                     break;
                 }
 
-                int x1 = x + iStep2 * step + iStep1 * step;
-                int y1 = y + iStep2 * step / 2 * -1 + iStep1 * step / 2;
-                GoScriptMouseClick(100, MouseButtons.Left, x1, y1, mouseMoveClickDelay);
+                MouseAction action = new()
+                {
+                    X = x + iStep2 * step + iStep1 * step,
+                    Y = y + iStep2 * step / 2 * -1 + iStep1 * step / 2,
+                    Button = MouseButtons.Left,
+                    Delay = 100,
+                };
+
+                action.Perform(beforePerformDelay: mouseMoveClickDelay);
             }
         }
     }
@@ -263,7 +263,7 @@ internal partial class MainForm : Form
     {
         int stepCount = Convert.ToInt32(uiClassicStepCount.Text);
         int mouseMoveClickDelay = Convert.ToInt32(mouseMoveClickDelayTextBox.Text);
-        double delay = Convert.ToDouble(uiDelayTextBox.Text);
+        int delay = Convert.ToInt32(uiDelayTextBox.Text);
 
         for (int i = 0; i < stepCount; i++)
         {
@@ -276,56 +276,20 @@ internal partial class MainForm : Form
                         break;
                     }
 
-                    switch (myAction)
-                    {
-                        case MouseAction mouseAction:
-                            int x = mouseAction.X;
-                            int y = mouseAction.Y;
-
-                            GoScriptMouseClick(mouseAction.Delay, mouseAction.Button, x, y, mouseMoveClickDelay, delay);
-                            break;
-
-                        case KeyboardAction keyboardAction:
-                            KeyboardCLick(delay, keyboardAction);
-                            break;
-                    }
+                    myAction.Perform(delay, mouseMoveClickDelay, LogWrite);
                 }
             }
         }
     }
 
-    private void KeyboardCLick(double delay, KeyboardAction myAction)
+    private void LogWrite(string message)
     {
-        Thread.Sleep((int)(myAction.Delay * delay));
-        IntPtr handle = GetForegroundWindow();
-        LogWrite(handle.ToString());
-        PostMessage(handle, WM_KEYDOWN, myAction.KeyValue, 0);
-    }
-
-    private void GoScriptMouseClick(double myActionWait, MouseButtons myActionButton, int x, int y, int mouseMoveClickDelay, double delay = 1)
-    {
-        Thread.Sleep((int)(myActionWait * delay));
-
-        LogWrite("script MouseClick -> " + x + " - " + y);
-
-        Cursor.Position = new Point(x, y);
-        Thread.Sleep(mouseMoveClickDelay);
-
-        switch (myActionButton)
-        {
-            case MouseButtons.Left:
-                mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, Cursor.Position.X, Cursor.Position.Y, 0, 0);
-                break;
-
-            case MouseButtons.Right:
-                mouse_event(MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_RIGHTUP, Cursor.Position.X, Cursor.Position.Y, 0, 0);
-                break;
-        }
-    }
-
-    private void LogWrite(string txt)
-    {
-        textBox.AppendText(txt + Environment.NewLine);
+        textBox.AppendText(message + Environment.NewLine);
         textBox.SelectionStart = textBox.Text.Length;
+    }
+
+    private void LogWrite(string caption, string message)
+    {
+        LogWrite(caption.PadRight(12) + " - " + message + Environment.NewLine);
     }
 }
