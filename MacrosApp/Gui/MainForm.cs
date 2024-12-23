@@ -13,7 +13,8 @@ internal partial class MainForm : Form
 
     private const uint WM_KEYDOWN = 0x0100;
 
-    private UserActivityHook _actHook;
+    private readonly UserActivityHook _actHook = new();
+
     private int _lastMouseX;
     private int _lastMouseY;
 
@@ -26,6 +27,8 @@ internal partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
+        FormClosing += OnFormClosing;
+        Load += OnFormLoad;
     }
 
     private void MouseMoved(object? sender, MouseEventArgs e)
@@ -34,7 +37,7 @@ internal partial class MainForm : Form
 
         if (e.Clicks > 0)
         {
-            LogWrite("MouseButton 	- " + e.Button);
+            LogWrite("MouseButton", e.Button.ToString());
 
             if (_isStartMacros)
             {
@@ -56,19 +59,19 @@ internal partial class MainForm : Form
         _lastMouseY = e.Y;
     }
 
-    private void MyKeyDown(object? sender, KeyEventArgs e)
+    private void OnKeyDown(object? sender, KeyEventArgs e)
     {
-        LogWrite("KeyDown 	- " + e.KeyData);
+        LogWrite("KeyDown", e.KeyData.ToString());
     }
 
-    private void MyKeyPress(object? sender, KeyPressEventArgs e)
+    private void OnKeyPress(object? sender, KeyPressEventArgs e)
     {
-        LogWrite("KeyPress 	- " + e.KeyChar);
+        LogWrite("KeyPress", e.KeyChar.ToString());
     }
 
-    private void MyKeyUp(object? sender, KeyEventArgs e)
+    private void OnKeyUp(object? sender, KeyEventArgs e)
     {
-        LogWrite("KeyUp 		- " + e.KeyData);
+        LogWrite("KeyUp", e.KeyData.ToString());
 
         if (_isStartMacros && e.KeyCode != Keys.W)
         {
@@ -147,22 +150,20 @@ internal partial class MainForm : Form
         _actHook.Stop();
     }
 
-    private void MainFormLoad(object sender, EventArgs e)
+    private void OnFormLoad(object? sender, EventArgs e)
     {
-        _actHook = new UserActivityHook();
-
         _actHook.OnMouseActivity += MouseMoved;
-        _actHook.KeyDown += MyKeyDown;
-        _actHook.KeyPress += MyKeyPress;
-        _actHook.KeyUp += MyKeyUp;
+        _actHook.KeyDown += OnKeyDown;
+        _actHook.KeyPress += OnKeyPress;
+        _actHook.KeyUp += OnKeyUp;
     }
 
-    private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+    private void OnFormClosing(object? sender, FormClosingEventArgs e)
     {
         _actHook.OnMouseActivity -= MouseMoved;
-        _actHook.KeyDown -= MyKeyDown;
-        _actHook.KeyPress -= MyKeyPress;
-        _actHook.KeyUp -= MyKeyUp;
+        _actHook.KeyDown -= OnKeyDown;
+        _actHook.KeyPress -= OnKeyPress;
+        _actHook.KeyUp -= OnKeyUp;
 
         _actHook.Stop();
     }
@@ -196,24 +197,20 @@ internal partial class MainForm : Form
                 {
                     if (_isBreak)
                     {
+                        // TODO: return; ?
                         break;
                     }
 
-                    MyAction myAction2 = _myActions[iAction];
-
-                    switch (myAction2)
+                    switch (_myActions[iAction])
                     {
                         case MouseAction myAction:
-                            int x = myAction.X;
-                            int y = myAction.Y;
-
                             if ((iAction + 1) % every == 0)
                             {
-                                x = x + iStep2 * shift + iStep1 * shift;
-                                y = y + iStep2 * shift2 * -1 + iStep1 * shift2;
+                                myAction.X = myAction.X + iStep2 * shift + iStep1 * shift;
+                                myAction.Y = myAction.Y + iStep2 * shift2 * -1 + iStep1 * shift2;
                             }
 
-                            GoScriptMouseClick(myAction.Delay, myAction.Button, x, y, mouseMoveClickDelay, delay);
+                            GoScriptMouseClick(myAction, mouseMoveClickDelay, delay);
                             break;
 
                         case KeyboardAction myAction:
@@ -232,7 +229,7 @@ internal partial class MainForm : Form
         int mouseMoveClickDelay = Convert.ToInt32(mouseMoveClickDelayTextBox.Text);
         int x = _lastMouseX;
         int y = _lastMouseY;
-        int step = 32;
+        int step;
 
         if (uiDerevoRadioButton.Checked)
         {
@@ -242,6 +239,10 @@ internal partial class MainForm : Form
         {
             step = Convert.ToInt32(uiKuricaKormShiftTextBox.Text);
         }
+        else
+        {
+            step = 32;
+        }
 
         for (int iStep1 = 0; iStep1 < step1Count; iStep1++)
         {
@@ -249,12 +250,19 @@ internal partial class MainForm : Form
             {
                 if (_isBreak)
                 {
+                    // TODO: return; ?
                     break;
                 }
 
-                int x1 = x + iStep2 * step + iStep1 * step;
-                int y1 = y + iStep2 * step / 2 * -1 + iStep1 * step / 2;
-                GoScriptMouseClick(100, MouseButtons.Left, x1, y1, mouseMoveClickDelay);
+                MouseAction action = new()
+                {
+                    X = x + iStep2 * step + iStep1 * step,
+                    Y = y + iStep2 * step / 2 * -1 + iStep1 * step / 2,
+                    Button = MouseButtons.Left,
+                    Delay = 100,
+                };
+
+                GoScriptMouseClick(action, mouseMoveClickDelay);
             }
         }
     }
@@ -279,10 +287,7 @@ internal partial class MainForm : Form
                     switch (myAction)
                     {
                         case MouseAction mouseAction:
-                            int x = mouseAction.X;
-                            int y = mouseAction.Y;
-
-                            GoScriptMouseClick(mouseAction.Delay, mouseAction.Button, x, y, mouseMoveClickDelay, delay);
+                            GoScriptMouseClick(mouseAction, mouseMoveClickDelay, delay);
                             break;
 
                         case KeyboardAction keyboardAction:
@@ -302,16 +307,16 @@ internal partial class MainForm : Form
         PostMessage(handle, WM_KEYDOWN, myAction.KeyValue, 0);
     }
 
-    private void GoScriptMouseClick(double myActionWait, MouseButtons myActionButton, int x, int y, int mouseMoveClickDelay, double delay = 1)
+    private void GoScriptMouseClick(MouseAction action, int mouseMoveClickDelay, double delay = 1)
     {
-        Thread.Sleep((int)(myActionWait * delay));
+        Thread.Sleep((int)(action.Delay * delay));
 
-        LogWrite("script MouseClick -> " + x + " - " + y);
+        LogWrite("script MouseClick -> " + action.X + " - " + action.Y);
 
-        Cursor.Position = new Point(x, y);
+        Cursor.Position = action.Position;
         Thread.Sleep(mouseMoveClickDelay);
 
-        switch (myActionButton)
+        switch (action.Button)
         {
             case MouseButtons.Left:
                 mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, Cursor.Position.X, Cursor.Position.Y, 0, 0);
@@ -323,9 +328,15 @@ internal partial class MainForm : Form
         }
     }
 
-    private void LogWrite(string txt)
+    private void LogWrite(string message)
     {
-        textBox.AppendText(txt + Environment.NewLine);
+        textBox.AppendText(message + Environment.NewLine);
+        textBox.SelectionStart = textBox.Text.Length;
+    }
+
+    private void LogWrite(string caption, string message)
+    {
+        textBox.AppendText(caption.PadRight(12) + " - " + message + Environment.NewLine);
         textBox.SelectionStart = textBox.Text.Length;
     }
 }

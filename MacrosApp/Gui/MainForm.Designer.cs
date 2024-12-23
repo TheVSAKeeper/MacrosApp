@@ -31,382 +31,384 @@ partial class MainForm
     /// </summary>
     private void InitializeComponent()
     {
-         this.textBox = new System.Windows.Forms.TextBox();
-            this.labelMousePosition = new System.Windows.Forms.Label();
-            this.buttonStop = new System.Windows.Forms.Button();
-            this.buttonStart = new System.Windows.Forms.Button();
-            this.uiStep1CountTextBox = new System.Windows.Forms.TextBox();
-            this.uiStep2CountTextBox = new System.Windows.Forms.TextBox();
-            this.uiStep1ShiftCountTextBox = new System.Windows.Forms.TextBox();
-            this.uiStep2ShiftCountTextBox = new System.Windows.Forms.TextBox();
-            this.twoStepWithShiftRadioButton = new System.Windows.Forms.RadioButton();
-            this.uiKuricaKormRadioButton = new System.Windows.Forms.RadioButton();
-            this.uiKuricaKormStep2CountTextBox = new System.Windows.Forms.TextBox();
-            this.uiKuricaKormStep1CountTextBox = new System.Windows.Forms.TextBox();
-            this.uiDelayTextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.uiClassicStepCount = new System.Windows.Forms.TextBox();
-            this.uiShiftEveryTextBox = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.uiClassicRadioButton = new System.Windows.Forms.RadioButton();
-            this.mouseMoveClickDelayTextBox = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.uiMacrosHistoryControl = new MacrosHistoryControl();
-            this.uiDerevoRadioButton = new System.Windows.Forms.RadioButton();
-            this.uiKuricaCustomRadioButton = new System.Windows.Forms.RadioButton();
-            this.uiKuricaKormShiftTextBox = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.SuspendLayout();
-            //
-            // textBox
-            //
-            this.textBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox.Font = new System.Drawing.Font("Courier New", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
-            this.textBox.Location = new System.Drawing.Point(4, 307);
-            this.textBox.Multiline = true;
-            this.textBox.Name = "textBox";
-            this.textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox.Size = new System.Drawing.Size(841, 270);
-            this.textBox.TabIndex = 3;
-            //
-            // labelMousePosition
-            //
-            this.labelMousePosition.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelMousePosition.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelMousePosition.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelMousePosition.Location = new System.Drawing.Point(4, 272);
-            this.labelMousePosition.Name = "labelMousePosition";
-            this.labelMousePosition.Size = new System.Drawing.Size(831, 23);
-            this.labelMousePosition.TabIndex = 2;
-            this.labelMousePosition.Text = "labelMousePosition";
-            this.labelMousePosition.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
-            // buttonStop
-            //
-            this.buttonStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonStop.Location = new System.Drawing.Point(85, 3);
-            this.buttonStop.Name = "buttonStop";
-            this.buttonStop.Size = new System.Drawing.Size(75, 23);
-            this.buttonStop.TabIndex = 1;
-            this.buttonStop.Text = "Stop";
-            this.buttonStop.Click += new System.EventHandler(this.ButtonStopClick);
-            //
-            // buttonStart
-            //
-            this.buttonStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonStart.Location = new System.Drawing.Point(4, 3);
-            this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(75, 23);
-            this.buttonStart.TabIndex = 0;
-            this.buttonStart.Text = "Start";
-            this.buttonStart.Click += new System.EventHandler(this.ButtonStartClick);
-            //
-            // uiStep1CountTextBox
-            //
-            this.uiStep1CountTextBox.Location = new System.Drawing.Point(164, 49);
-            this.uiStep1CountTextBox.Name = "uiStep1CountTextBox";
-            this.uiStep1CountTextBox.Size = new System.Drawing.Size(100, 20);
-            this.uiStep1CountTextBox.TabIndex = 4;
-            this.uiStep1CountTextBox.Text = "10";
-            //
-            // uiStep2CountTextBox
-            //
-            this.uiStep2CountTextBox.Location = new System.Drawing.Point(270, 49);
-            this.uiStep2CountTextBox.Name = "uiStep2CountTextBox";
-            this.uiStep2CountTextBox.Size = new System.Drawing.Size(100, 20);
-            this.uiStep2CountTextBox.TabIndex = 5;
-            this.uiStep2CountTextBox.Text = "1";
-            //
-            // uiStep1ShiftCountTextBox
-            //
-            this.uiStep1ShiftCountTextBox.Location = new System.Drawing.Point(376, 49);
-            this.uiStep1ShiftCountTextBox.Name = "uiStep1ShiftCountTextBox";
-            this.uiStep1ShiftCountTextBox.Size = new System.Drawing.Size(100, 20);
-            this.uiStep1ShiftCountTextBox.TabIndex = 6;
-            this.uiStep1ShiftCountTextBox.Text = "16";
-            //
-            // uiStep2ShiftCountTextBox
-            //
-            this.uiStep2ShiftCountTextBox.Location = new System.Drawing.Point(482, 49);
-            this.uiStep2ShiftCountTextBox.Name = "uiStep2ShiftCountTextBox";
-            this.uiStep2ShiftCountTextBox.Size = new System.Drawing.Size(100, 20);
-            this.uiStep2ShiftCountTextBox.TabIndex = 7;
-            this.uiStep2ShiftCountTextBox.Text = "8";
-            //
-            // twoStepWithShiftRadioButton
-            //
-            this.twoStepWithShiftRadioButton.AutoSize = true;
-            this.twoStepWithShiftRadioButton.Location = new System.Drawing.Point(4, 50);
-            this.twoStepWithShiftRadioButton.Name = "twoStepWithShiftRadioButton";
-            this.twoStepWithShiftRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.twoStepWithShiftRadioButton.Size = new System.Drawing.Size(154, 17);
-            this.twoStepWithShiftRadioButton.TabIndex = 8;
-            this.twoStepWithShiftRadioButton.Text = "2 прохода со смещением";
-            this.twoStepWithShiftRadioButton.UseVisualStyleBackColor = true;
-            //
-            // uiKuricaKormRadioButton
-            //
-            this.uiKuricaKormRadioButton.AutoSize = true;
-            this.uiKuricaKormRadioButton.Checked = true;
-            this.uiKuricaKormRadioButton.Location = new System.Drawing.Point(60, 109);
-            this.uiKuricaKormRadioButton.Name = "uiKuricaKormRadioButton";
-            this.uiKuricaKormRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.uiKuricaKormRadioButton.Size = new System.Drawing.Size(98, 17);
-            this.uiKuricaKormRadioButton.TabIndex = 9;
-            this.uiKuricaKormRadioButton.TabStop = true;
-            this.uiKuricaKormRadioButton.Text = "корм лебедям";
-            this.uiKuricaKormRadioButton.UseVisualStyleBackColor = true;
-            //
-            // uiKuricaKormStep2CountTextBox
-            //
-            this.uiKuricaKormStep2CountTextBox.Location = new System.Drawing.Point(165, 108);
-            this.uiKuricaKormStep2CountTextBox.Name = "uiKuricaKormStep2CountTextBox";
-            this.uiKuricaKormStep2CountTextBox.Size = new System.Drawing.Size(52, 20);
-            this.uiKuricaKormStep2CountTextBox.TabIndex = 10;
-            this.uiKuricaKormStep2CountTextBox.Text = "10";
-            //
-            // uiKuricaKormStep1CountTextBox
-            //
-            this.uiKuricaKormStep1CountTextBox.Location = new System.Drawing.Point(246, 108);
-            this.uiKuricaKormStep1CountTextBox.Name = "uiKuricaKormStep1CountTextBox";
-            this.uiKuricaKormStep1CountTextBox.Size = new System.Drawing.Size(52, 20);
-            this.uiKuricaKormStep1CountTextBox.TabIndex = 11;
-            this.uiKuricaKormStep1CountTextBox.Text = "10";
-            //
-            // uiDelayTextBox
-            //
-            this.uiDelayTextBox.Location = new System.Drawing.Point(685, 209);
-            this.uiDelayTextBox.Name = "uiDelayTextBox";
-            this.uiDelayTextBox.Size = new System.Drawing.Size(100, 20);
-            this.uiDelayTextBox.TabIndex = 12;
-            this.uiDelayTextBox.Text = "1";
-            //
-            // label1
-            //
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(165, 33);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(75, 13);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "Количество 1";
-            //
-            // label2
-            //
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(269, 33);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(75, 13);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "Количество 2";
-            //
-            // label3
-            //
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(373, 33);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 13);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "смещение 1";
-            //
-            // label4
-            //
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(482, 33);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(69, 13);
-            this.label4.TabIndex = 16;
-            this.label4.Text = "смещение 2";
-            //
-            // label5
-            //
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(420, 212);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(259, 13);
-            this.label5.TabIndex = 17;
-            this.label5.Text = "задержка (увеличить интервал между кликами) в";
-            //
-            // label6
-            //
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(162, 90);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(75, 13);
-            this.label6.TabIndex = 18;
-            this.label6.Text = "Количество 1";
-            //
-            // label7
-            //
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(243, 90);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(75, 13);
-            this.label7.TabIndex = 19;
-            this.label7.Text = "Количество 2";
-            //
-            // label8
-            //
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(165, 151);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(75, 13);
-            this.label8.TabIndex = 22;
-            this.label8.Text = "Количество 1";
-            //
-            // uiClassicStepCount
-            //
-            this.uiClassicStepCount.Location = new System.Drawing.Point(168, 169);
-            this.uiClassicStepCount.Name = "uiClassicStepCount";
-            this.uiClassicStepCount.Size = new System.Drawing.Size(52, 20);
-            this.uiClassicStepCount.TabIndex = 21;
-            this.uiClassicStepCount.Text = "10";
-            //
-            // uiShiftEveryTextBox
-            //
-            this.uiShiftEveryTextBox.Location = new System.Drawing.Point(588, 47);
-            this.uiShiftEveryTextBox.Name = "uiShiftEveryTextBox";
-            this.uiShiftEveryTextBox.Size = new System.Drawing.Size(100, 20);
-            this.uiShiftEveryTextBox.TabIndex = 23;
-            this.uiShiftEveryTextBox.Text = "3";
-            //
-            // label9
-            //
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(585, 30);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(103, 13);
-            this.label9.TabIndex = 24;
-            this.label9.Text = "смещение каждые";
-            //
-            // uiClassicRadioButton
-            //
-            this.uiClassicRadioButton.AutoSize = true;
-            this.uiClassicRadioButton.Location = new System.Drawing.Point(4, 170);
-            this.uiClassicRadioButton.Name = "uiClassicRadioButton";
-            this.uiClassicRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.uiClassicRadioButton.Size = new System.Drawing.Size(154, 17);
-            this.uiClassicRadioButton.TabIndex = 25;
-            this.uiClassicRadioButton.Text = "повторять без смещения";
-            this.uiClassicRadioButton.UseVisualStyleBackColor = true;
-            //
-            // mouseMoveClickDelayTextBox
-            //
-            this.mouseMoveClickDelayTextBox.Location = new System.Drawing.Point(685, 235);
-            this.mouseMoveClickDelayTextBox.Name = "mouseMoveClickDelayTextBox";
-            this.mouseMoveClickDelayTextBox.Size = new System.Drawing.Size(100, 20);
-            this.mouseMoveClickDelayTextBox.TabIndex = 26;
-            this.mouseMoveClickDelayTextBox.Text = "500";
-            //
-            // label10
-            //
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(425, 241);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(254, 13);
-            this.label10.TabIndex = 27;
-            this.label10.Text = "Задержка перед перемещение мышки и кликом";
-            //
-            // uiMacrosHistoryControl
-            //
-            this.uiMacrosHistoryControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiMacrosHistoryControl.AutoScroll = true;
-            this.uiMacrosHistoryControl.Location = new System.Drawing.Point(841, 14);
-            this.uiMacrosHistoryControl.Name = "uiMacrosHistoryControl";
-            this.uiMacrosHistoryControl.Size = new System.Drawing.Size(377, 554);
-            this.uiMacrosHistoryControl.TabIndex = 28;
-            //
-            // uiDerevoRadioButton
-            //
-            this.uiDerevoRadioButton.AutoSize = true;
-            this.uiDerevoRadioButton.Location = new System.Drawing.Point(91, 90);
-            this.uiDerevoRadioButton.Name = "uiDerevoRadioButton";
-            this.uiDerevoRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.uiDerevoRadioButton.Size = new System.Drawing.Size(67, 17);
-            this.uiDerevoRadioButton.TabIndex = 29;
-            this.uiDerevoRadioButton.Text = "деревья";
-            this.uiDerevoRadioButton.UseVisualStyleBackColor = true;
-            //
-            // uiKuricaCustomRadioButton
-            //
-            this.uiKuricaCustomRadioButton.AutoSize = true;
-            this.uiKuricaCustomRadioButton.Location = new System.Drawing.Point(304, 109);
-            this.uiKuricaCustomRadioButton.Name = "uiKuricaCustomRadioButton";
-            this.uiKuricaCustomRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.uiKuricaCustomRadioButton.Size = new System.Drawing.Size(91, 17);
-            this.uiKuricaCustomRadioButton.TabIndex = 30;
-            this.uiKuricaCustomRadioButton.Text = "произвольно";
-            this.uiKuricaCustomRadioButton.UseVisualStyleBackColor = true;
-            //
-            // uiKuricaKormShiftTextBox
-            //
-            this.uiKuricaKormShiftTextBox.Location = new System.Drawing.Point(401, 108);
-            this.uiKuricaKormShiftTextBox.Name = "uiKuricaKormShiftTextBox";
-            this.uiKuricaKormShiftTextBox.Size = new System.Drawing.Size(52, 20);
-            this.uiKuricaKormShiftTextBox.TabIndex = 31;
-            this.uiKuricaKormShiftTextBox.Text = "48";
-            //
-            // label11
-            //
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(398, 90);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(190, 13);
-            this.label11.TabIndex = 33;
-            this.label11.Text = "смещение (деревья 64, курицам 32)";
-            //
-            // MainForm
-            //
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(1230, 580);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.uiKuricaKormShiftTextBox);
-            this.Controls.Add(this.uiKuricaCustomRadioButton);
-            this.Controls.Add(this.uiDerevoRadioButton);
-            this.Controls.Add(this.uiMacrosHistoryControl);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.mouseMoveClickDelayTextBox);
-            this.Controls.Add(this.uiClassicRadioButton);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.uiShiftEveryTextBox);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.uiClassicStepCount);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.uiDelayTextBox);
-            this.Controls.Add(this.uiKuricaKormStep1CountTextBox);
-            this.Controls.Add(this.uiKuricaKormStep2CountTextBox);
-            this.Controls.Add(this.uiKuricaKormRadioButton);
-            this.Controls.Add(this.twoStepWithShiftRadioButton);
-            this.Controls.Add(this.uiStep2ShiftCountTextBox);
-            this.Controls.Add(this.uiStep1ShiftCountTextBox);
-            this.Controls.Add(this.uiStep2CountTextBox);
-            this.Controls.Add(this.uiStep1CountTextBox);
-            this.Controls.Add(this.textBox);
-            this.Controls.Add(this.labelMousePosition);
-            this.Controls.Add(this.buttonStop);
-            this.Controls.Add(this.buttonStart);
-            this.Name = "MainForm";
-            this.Text = "MacrosApp";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
-            this.Load += new System.EventHandler(this.MainFormLoad);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+        textBox = new System.Windows.Forms.TextBox();
+        labelMousePosition = new System.Windows.Forms.Label();
+        buttonStop = new System.Windows.Forms.Button();
+        buttonStart = new System.Windows.Forms.Button();
+        uiStep1CountTextBox = new System.Windows.Forms.TextBox();
+        uiStep2CountTextBox = new System.Windows.Forms.TextBox();
+        uiStep1ShiftCountTextBox = new System.Windows.Forms.TextBox();
+        uiStep2ShiftCountTextBox = new System.Windows.Forms.TextBox();
+        twoStepWithShiftRadioButton = new System.Windows.Forms.RadioButton();
+        uiKuricaKormRadioButton = new System.Windows.Forms.RadioButton();
+        uiKuricaKormStep2CountTextBox = new System.Windows.Forms.TextBox();
+        uiKuricaKormStep1CountTextBox = new System.Windows.Forms.TextBox();
+        uiDelayTextBox = new System.Windows.Forms.TextBox();
+        label1 = new System.Windows.Forms.Label();
+        label2 = new System.Windows.Forms.Label();
+        label3 = new System.Windows.Forms.Label();
+        label4 = new System.Windows.Forms.Label();
+        label5 = new System.Windows.Forms.Label();
+        label6 = new System.Windows.Forms.Label();
+        label7 = new System.Windows.Forms.Label();
+        label8 = new System.Windows.Forms.Label();
+        uiClassicStepCount = new System.Windows.Forms.TextBox();
+        uiShiftEveryTextBox = new System.Windows.Forms.TextBox();
+        label9 = new System.Windows.Forms.Label();
+        uiClassicRadioButton = new System.Windows.Forms.RadioButton();
+        mouseMoveClickDelayTextBox = new System.Windows.Forms.TextBox();
+        label10 = new System.Windows.Forms.Label();
+        uiMacrosHistoryControl = new MacrosApp.Gui.MacrosHistoryControl();
+        uiDerevoRadioButton = new System.Windows.Forms.RadioButton();
+        uiKuricaCustomRadioButton = new System.Windows.Forms.RadioButton();
+        uiKuricaKormShiftTextBox = new System.Windows.Forms.TextBox();
+        label11 = new System.Windows.Forms.Label();
+        SuspendLayout();
+
+        // 
+        // textBox
+        // 
+        textBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                                                               | System.Windows.Forms.AnchorStyles.Left)
+                                                              | System.Windows.Forms.AnchorStyles.Right));
+
+        textBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+        textBox.Font = new System.Drawing.Font("Courier New", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
+        textBox.Location = new System.Drawing.Point(10, 756);
+        textBox.Multiline = true;
+        textBox.Name = "textBox";
+        textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+        textBox.Size = new System.Drawing.Size(2018, 664);
+        textBox.TabIndex = 3;
+
+        // 
+        // labelMousePosition
+        // 
+        labelMousePosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                                                                         | System.Windows.Forms.AnchorStyles.Right));
+
+        labelMousePosition.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+        labelMousePosition.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        labelMousePosition.Location = new System.Drawing.Point(10, 670);
+        labelMousePosition.Name = "labelMousePosition";
+        labelMousePosition.Size = new System.Drawing.Size(1994, 56);
+        labelMousePosition.TabIndex = 2;
+        labelMousePosition.Text = "labelMousePosition";
+        labelMousePosition.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        // 
+        // buttonStop
+        // 
+        buttonStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        buttonStop.Location = new System.Drawing.Point(204, 7);
+        buttonStop.Name = "buttonStop";
+        buttonStop.Size = new System.Drawing.Size(180, 57);
+        buttonStop.TabIndex = 1;
+        buttonStop.Text = "Stop";
+        buttonStop.Click += ButtonStopClick;
+        // 
+        // buttonStart
+        // 
+        buttonStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        buttonStart.Location = new System.Drawing.Point(10, 7);
+        buttonStart.Name = "buttonStart";
+        buttonStart.Size = new System.Drawing.Size(180, 57);
+        buttonStart.TabIndex = 0;
+        buttonStart.Text = "Start";
+        buttonStart.Click += ButtonStartClick;
+        // 
+        // uiStep1CountTextBox
+        // 
+        uiStep1CountTextBox.Location = new System.Drawing.Point(394, 121);
+        uiStep1CountTextBox.Name = "uiStep1CountTextBox";
+        uiStep1CountTextBox.Size = new System.Drawing.Size(240, 39);
+        uiStep1CountTextBox.TabIndex = 4;
+        uiStep1CountTextBox.Text = "10";
+        // 
+        // uiStep2CountTextBox
+        // 
+        uiStep2CountTextBox.Location = new System.Drawing.Point(648, 121);
+        uiStep2CountTextBox.Name = "uiStep2CountTextBox";
+        uiStep2CountTextBox.Size = new System.Drawing.Size(240, 39);
+        uiStep2CountTextBox.TabIndex = 5;
+        uiStep2CountTextBox.Text = "1";
+        // 
+        // uiStep1ShiftCountTextBox
+        // 
+        uiStep1ShiftCountTextBox.Location = new System.Drawing.Point(902, 121);
+        uiStep1ShiftCountTextBox.Name = "uiStep1ShiftCountTextBox";
+        uiStep1ShiftCountTextBox.Size = new System.Drawing.Size(240, 39);
+        uiStep1ShiftCountTextBox.TabIndex = 6;
+        uiStep1ShiftCountTextBox.Text = "16";
+        // 
+        // uiStep2ShiftCountTextBox
+        // 
+        uiStep2ShiftCountTextBox.Location = new System.Drawing.Point(1157, 121);
+        uiStep2ShiftCountTextBox.Name = "uiStep2ShiftCountTextBox";
+        uiStep2ShiftCountTextBox.Size = new System.Drawing.Size(240, 39);
+        uiStep2ShiftCountTextBox.TabIndex = 7;
+        uiStep2ShiftCountTextBox.Text = "8";
+        // 
+        // twoStepWithShiftRadioButton
+        // 
+        twoStepWithShiftRadioButton.AutoSize = true;
+        twoStepWithShiftRadioButton.Location = new System.Drawing.Point(10, 123);
+        twoStepWithShiftRadioButton.Name = "twoStepWithShiftRadioButton";
+        twoStepWithShiftRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+        twoStepWithShiftRadioButton.Size = new System.Drawing.Size(328, 36);
+        twoStepWithShiftRadioButton.TabIndex = 8;
+        twoStepWithShiftRadioButton.Text = "2 прохода со смещением";
+        twoStepWithShiftRadioButton.UseVisualStyleBackColor = true;
+        // 
+        // uiKuricaKormRadioButton
+        // 
+        uiKuricaKormRadioButton.AutoSize = true;
+        uiKuricaKormRadioButton.Checked = true;
+        uiKuricaKormRadioButton.Location = new System.Drawing.Point(144, 268);
+        uiKuricaKormRadioButton.Name = "uiKuricaKormRadioButton";
+        uiKuricaKormRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+        uiKuricaKormRadioButton.Size = new System.Drawing.Size(204, 36);
+        uiKuricaKormRadioButton.TabIndex = 9;
+        uiKuricaKormRadioButton.TabStop = true;
+        uiKuricaKormRadioButton.Text = "корм лебедям";
+        uiKuricaKormRadioButton.UseVisualStyleBackColor = true;
+        // 
+        // uiKuricaKormStep2CountTextBox
+        // 
+        uiKuricaKormStep2CountTextBox.Location = new System.Drawing.Point(396, 266);
+        uiKuricaKormStep2CountTextBox.Name = "uiKuricaKormStep2CountTextBox";
+        uiKuricaKormStep2CountTextBox.Size = new System.Drawing.Size(125, 39);
+        uiKuricaKormStep2CountTextBox.TabIndex = 10;
+        uiKuricaKormStep2CountTextBox.Text = "10";
+        // 
+        // uiKuricaKormStep1CountTextBox
+        // 
+        uiKuricaKormStep1CountTextBox.Location = new System.Drawing.Point(590, 266);
+        uiKuricaKormStep1CountTextBox.Name = "uiKuricaKormStep1CountTextBox";
+        uiKuricaKormStep1CountTextBox.Size = new System.Drawing.Size(125, 39);
+        uiKuricaKormStep1CountTextBox.TabIndex = 11;
+        uiKuricaKormStep1CountTextBox.Text = "10";
+        // 
+        // uiDelayTextBox
+        // 
+        uiDelayTextBox.Location = new System.Drawing.Point(1644, 514);
+        uiDelayTextBox.Name = "uiDelayTextBox";
+        uiDelayTextBox.Size = new System.Drawing.Size(240, 39);
+        uiDelayTextBox.TabIndex = 12;
+        uiDelayTextBox.Text = "1";
+        // 
+        // label1
+        // 
+        label1.AutoSize = true;
+        label1.Location = new System.Drawing.Point(396, 81);
+        label1.Name = "label1";
+        label1.Size = new System.Drawing.Size(164, 32);
+        label1.TabIndex = 13;
+        label1.Text = "Количество 1";
+        // 
+        // label2
+        // 
+        label2.AutoSize = true;
+        label2.Location = new System.Drawing.Point(646, 81);
+        label2.Name = "label2";
+        label2.Size = new System.Drawing.Size(164, 32);
+        label2.TabIndex = 14;
+        label2.Text = "Количество 2";
+        // 
+        // label3
+        // 
+        label3.AutoSize = true;
+        label3.Location = new System.Drawing.Point(895, 81);
+        label3.Name = "label3";
+        label3.Size = new System.Drawing.Size(149, 32);
+        label3.TabIndex = 15;
+        label3.Text = "смещение 1";
+        // 
+        // label4
+        // 
+        label4.AutoSize = true;
+        label4.Location = new System.Drawing.Point(1157, 81);
+        label4.Name = "label4";
+        label4.Size = new System.Drawing.Size(149, 32);
+        label4.TabIndex = 16;
+        label4.Text = "смещение 2";
+        // 
+        // label5
+        // 
+        label5.AutoSize = true;
+        label5.Location = new System.Drawing.Point(1008, 522);
+        label5.Name = "label5";
+        label5.Size = new System.Drawing.Size(566, 32);
+        label5.TabIndex = 17;
+        label5.Text = "задержка (увеличить интервал между кликами) в";
+        // 
+        // label6
+        // 
+        label6.AutoSize = true;
+        label6.Location = new System.Drawing.Point(389, 222);
+        label6.Name = "label6";
+        label6.Size = new System.Drawing.Size(164, 32);
+        label6.TabIndex = 18;
+        label6.Text = "Количество 1";
+        // 
+        // label7
+        // 
+        label7.AutoSize = true;
+        label7.Location = new System.Drawing.Point(583, 222);
+        label7.Name = "label7";
+        label7.Size = new System.Drawing.Size(164, 32);
+        label7.TabIndex = 19;
+        label7.Text = "Количество 2";
+        // 
+        // label8
+        // 
+        label8.AutoSize = true;
+        label8.Location = new System.Drawing.Point(396, 372);
+        label8.Name = "label8";
+        label8.Size = new System.Drawing.Size(164, 32);
+        label8.TabIndex = 22;
+        label8.Text = "Количество 1";
+        // 
+        // uiClassicStepCount
+        // 
+        uiClassicStepCount.Location = new System.Drawing.Point(403, 416);
+        uiClassicStepCount.Name = "uiClassicStepCount";
+        uiClassicStepCount.Size = new System.Drawing.Size(125, 39);
+        uiClassicStepCount.TabIndex = 21;
+        uiClassicStepCount.Text = "10";
+        // 
+        // uiShiftEveryTextBox
+        // 
+        uiShiftEveryTextBox.Location = new System.Drawing.Point(1411, 116);
+        uiShiftEveryTextBox.Name = "uiShiftEveryTextBox";
+        uiShiftEveryTextBox.Size = new System.Drawing.Size(240, 39);
+        uiShiftEveryTextBox.TabIndex = 23;
+        uiShiftEveryTextBox.Text = "3";
+        // 
+        // label9
+        // 
+        label9.AutoSize = true;
+        label9.Location = new System.Drawing.Point(1404, 74);
+        label9.Name = "label9";
+        label9.Size = new System.Drawing.Size(221, 32);
+        label9.TabIndex = 24;
+        label9.Text = "смещение каждые";
+        // 
+        // uiClassicRadioButton
+        // 
+        uiClassicRadioButton.AutoSize = true;
+        uiClassicRadioButton.Location = new System.Drawing.Point(10, 418);
+        uiClassicRadioButton.Name = "uiClassicRadioButton";
+        uiClassicRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+        uiClassicRadioButton.Size = new System.Drawing.Size(324, 36);
+        uiClassicRadioButton.TabIndex = 25;
+        uiClassicRadioButton.Text = "повторять без смещения";
+        uiClassicRadioButton.UseVisualStyleBackColor = true;
+        // 
+        // mouseMoveClickDelayTextBox
+        // 
+        mouseMoveClickDelayTextBox.Location = new System.Drawing.Point(1644, 578);
+        mouseMoveClickDelayTextBox.Name = "mouseMoveClickDelayTextBox";
+        mouseMoveClickDelayTextBox.Size = new System.Drawing.Size(240, 39);
+        mouseMoveClickDelayTextBox.TabIndex = 26;
+        mouseMoveClickDelayTextBox.Text = "500";
+        // 
+        // label10
+        // 
+        label10.AutoSize = true;
+        label10.Location = new System.Drawing.Point(1020, 593);
+        label10.Name = "label10";
+        label10.Size = new System.Drawing.Size(556, 32);
+        label10.TabIndex = 27;
+        label10.Text = "Задержка перед перемещение мышки и кликом";
+        // 
+        // uiMacrosHistoryControl
+        // 
+        uiMacrosHistoryControl.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
+        uiMacrosHistoryControl.AutoScroll = true;
+        uiMacrosHistoryControl.Location = new System.Drawing.Point(2018, 34);
+        uiMacrosHistoryControl.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+        uiMacrosHistoryControl.Name = "uiMacrosHistoryControl";
+        uiMacrosHistoryControl.Size = new System.Drawing.Size(905, 1364);
+        uiMacrosHistoryControl.TabIndex = 28;
+        // 
+        // uiDerevoRadioButton
+        // 
+        uiDerevoRadioButton.AutoSize = true;
+        uiDerevoRadioButton.Location = new System.Drawing.Point(218, 222);
+        uiDerevoRadioButton.Name = "uiDerevoRadioButton";
+        uiDerevoRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+        uiDerevoRadioButton.Size = new System.Drawing.Size(135, 36);
+        uiDerevoRadioButton.TabIndex = 29;
+        uiDerevoRadioButton.Text = "деревья";
+        uiDerevoRadioButton.UseVisualStyleBackColor = true;
+        // 
+        // uiKuricaCustomRadioButton
+        // 
+        uiKuricaCustomRadioButton.AutoSize = true;
+        uiKuricaCustomRadioButton.Location = new System.Drawing.Point(730, 268);
+        uiKuricaCustomRadioButton.Name = "uiKuricaCustomRadioButton";
+        uiKuricaCustomRadioButton.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+        uiKuricaCustomRadioButton.Size = new System.Drawing.Size(192, 36);
+        uiKuricaCustomRadioButton.TabIndex = 30;
+        uiKuricaCustomRadioButton.Text = "произвольно";
+        uiKuricaCustomRadioButton.UseVisualStyleBackColor = true;
+        // 
+        // uiKuricaKormShiftTextBox
+        // 
+        uiKuricaKormShiftTextBox.Location = new System.Drawing.Point(962, 266);
+        uiKuricaKormShiftTextBox.Name = "uiKuricaKormShiftTextBox";
+        uiKuricaKormShiftTextBox.Size = new System.Drawing.Size(125, 39);
+        uiKuricaKormShiftTextBox.TabIndex = 31;
+        uiKuricaKormShiftTextBox.Text = "48";
+        // 
+        // label11
+        // 
+        label11.AutoSize = true;
+        label11.Location = new System.Drawing.Point(955, 222);
+        label11.Name = "label11";
+        label11.Size = new System.Drawing.Size(413, 32);
+        label11.TabIndex = 33;
+        label11.Text = "смещение (деревья 64, курицам 32)";
+        // 
+        // MainForm
+        // 
+        AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+        ClientSize = new System.Drawing.Size(2974, 1452);
+        Controls.Add(label11);
+        Controls.Add(uiKuricaKormShiftTextBox);
+        Controls.Add(uiKuricaCustomRadioButton);
+        Controls.Add(uiDerevoRadioButton);
+        Controls.Add(uiMacrosHistoryControl);
+        Controls.Add(label10);
+        Controls.Add(mouseMoveClickDelayTextBox);
+        Controls.Add(uiClassicRadioButton);
+        Controls.Add(label9);
+        Controls.Add(uiShiftEveryTextBox);
+        Controls.Add(label8);
+        Controls.Add(uiClassicStepCount);
+        Controls.Add(label7);
+        Controls.Add(label6);
+        Controls.Add(label5);
+        Controls.Add(label4);
+        Controls.Add(label3);
+        Controls.Add(label2);
+        Controls.Add(label1);
+        Controls.Add(uiDelayTextBox);
+        Controls.Add(uiKuricaKormStep1CountTextBox);
+        Controls.Add(uiKuricaKormStep2CountTextBox);
+        Controls.Add(uiKuricaKormRadioButton);
+        Controls.Add(twoStepWithShiftRadioButton);
+        Controls.Add(uiStep2ShiftCountTextBox);
+        Controls.Add(uiStep1ShiftCountTextBox);
+        Controls.Add(uiStep2CountTextBox);
+        Controls.Add(uiStep1CountTextBox);
+        Controls.Add(textBox);
+        Controls.Add(labelMousePosition);
+        Controls.Add(buttonStop);
+        Controls.Add(buttonStart);
+        Text = "MacrosApp";
+        ResumeLayout(false);
+        PerformLayout();
     }
 
     private Button buttonStart;

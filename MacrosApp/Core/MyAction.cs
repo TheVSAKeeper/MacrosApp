@@ -13,6 +13,7 @@ public class MouseAction : MyAction
     public int Y { get; set; }
     public MouseButtons Button { get; set; }
     public override string TypeText => "M";
+    public Point Position => new(X, Y);
 }
 
 public class KeyboardAction : MyAction
