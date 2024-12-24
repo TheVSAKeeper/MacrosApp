@@ -6,8 +6,11 @@ namespace MacrosApp.Core;
 
 public abstract record MyAction
 {
-    public double Delay { get; set; }
-    public int Count { get; set; }
+    public double Delay { get; init; }
+    public int Count { get; init; }
+
+    // TODO: Подумать над логированием
+    public abstract void Perform(double beforeActionDelay = 1, double beforePerformDelay = 0, Action<string>? log = null);
 
     // TODO: Происходит смешивание бизнес логики с логикой отображения
     public void FillHistoryElement(MacrosHistoryElemControl item)
@@ -19,11 +22,18 @@ public abstract record MyAction
         FillHistoryElementInner(item);
     }
 
-    // TODO: Подумать над логированием
-    public abstract void Perform(double beforeActionDelay = 1, double beforePerformDelay = 0, Action<string>? log = null);
+    public MyAction Update(MacrosHistoryElemControl historyElemControl)
+    {
+        return UpdateInner(historyElemControl) with
+        {
+            Count = historyElemControl.Count,
+            Delay = historyElemControl.Delay,
+        };
+    }
 
     // Альтернативный вариант - виртуальный метод с вызовом базового в дочерних
     protected abstract void FillHistoryElementInner(MacrosHistoryElemControl item);
+    protected abstract MyAction UpdateInner(MacrosHistoryElemControl historyElemControl);
 }
 
 public partial record MouseAction : MyAction
@@ -66,6 +76,16 @@ public partial record MouseAction : MyAction
         }
     }
 
+    protected override MyAction UpdateInner(MacrosHistoryElemControl historyElemControl)
+    {
+        return this with
+        {
+            X = historyElemControl.X,
+            Y = historyElemControl.Y,
+            Button = Buttons.Single(x => x.Value == historyElemControl.Button).Key,
+        };
+    }
+
     protected override void FillHistoryElementInner(MacrosHistoryElemControl item)
     {
         item.X = X;
@@ -94,6 +114,14 @@ public partial record KeyboardAction : MyAction
 
         // Thread.Sleep((int)beforePerformDelay);
         PostMessage(handle, WM_KEYDOWN, KeyValue, 0);
+    }
+
+    protected override MyAction UpdateInner(MacrosHistoryElemControl historyElemControl)
+    {
+        return this with
+        {
+            KeyValue = int.Parse(historyElemControl.Button),
+        };
     }
 
     protected override void FillHistoryElementInner(MacrosHistoryElemControl item)

@@ -42,7 +42,7 @@ public partial class MacrosHistoryControl : UserControl
                 continue;
             }
 
-            actions.Add(myAction);
+            actions.Add(myAction.Update(historyElemControl));
         }
 
         return actions;
