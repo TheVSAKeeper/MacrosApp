@@ -1,13 +1,15 @@
 ﻿using MacrosApp.Core;
-using Newtonsoft.Json;
 
 namespace MacrosApp.Gui;
 
 public partial class MacrosHistoryControl : UserControl
 {
+    private readonly IActionsProvider _actionsProvider;
+
     public MacrosHistoryControl()
     {
         InitializeComponent();
+        _actionsProvider = new JsonActionsProvider();
     }
 
     public void AddAction(MyAction action)
@@ -56,16 +58,7 @@ public partial class MacrosHistoryControl : UserControl
         }
 
         List<MyAction> actions = GetActions();
-
-        string filename = saveFileDialog1.FileName;
-
-        JsonSerializerSettings settings = new()
-        {
-            TypeNameHandling = TypeNameHandling.Objects,
-        };
-
-        string jsonString = JsonConvert.SerializeObject(actions, settings);
-        File.WriteAllText(filename, jsonString);
+        _actionsProvider.Save(actions, saveFileDialog1.FileName);
     }
 
     private void uiLoadButton_Click(object sender, EventArgs e)
@@ -75,19 +68,11 @@ public partial class MacrosHistoryControl : UserControl
             return;
         }
 
-        string filename = openFileDialog1.FileName;
-        string fileText = File.ReadAllText(filename);
-
-        JsonSerializerSettings settings = new()
-        {
-            TypeNameHandling = TypeNameHandling.Objects,
-        };
-
-        MyAction[]? actions = JsonConvert.DeserializeObject<MyAction[]>(fileText, settings);
+        IEnumerable<MyAction>? actions = _actionsProvider.Load(openFileDialog1.FileName);
 
         if (actions == null)
         {
-            MessageBox.Show("Не удалось десериализовать действия.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("Не удалось загрузить макросы.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
 

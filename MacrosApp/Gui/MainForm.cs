@@ -6,6 +6,9 @@ internal partial class MainForm : Form
 {
     private readonly UserActivityHook _actHook = new();
 
+    private readonly Dictionary<ControlKey, Keys> _keyBindings;
+    private readonly IKeyBindingsStorage _keyBindingsStorage;
+
     private int _lastMouseX;
     private int _lastMouseY;
 
@@ -18,6 +21,22 @@ internal partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
+
+        _keyBindingsStorage = new JsonKeyBindingsStorage("keybindings.json");
+        _keyBindings = _keyBindingsStorage.Load().ToDictionary();
+
+        if (_keyBindings.Count == 0)
+        {
+            _keyBindings = new Dictionary<ControlKey, Keys>
+            {
+                [ControlKey.StartMacros] = Keys.Q,
+                [ControlKey.StopMacros] = Keys.W,
+                [ControlKey.ExecuteScript] = Keys.E,
+                [ControlKey.BreakAction] = Keys.S,
+            };
+
+            _keyBindingsStorage.Save(_keyBindings);
+        }
 
         Load += OnFormLoad;
         FormClosing += OnFormClosing;
@@ -72,7 +91,14 @@ internal partial class MainForm : Form
     {
         LogWrite("KeyUp", e.KeyData.ToString());
 
-        if (_isStartMacros && e.KeyCode != Keys.W)
+        foreach (KeyValuePair<ControlKey, Keys> action in _keyBindings.Where(action => e.KeyCode == action.Value))
+        {
+            ExecuteAction(action.Key);
+            e.Handled = true;
+            return;
+        }
+
+        if (_isStartMacros)
         {
             KeyboardAction myAction = new()
             {
@@ -84,58 +110,6 @@ internal partial class MainForm : Form
 
             uiMacrosHistoryControl.AddAction(myAction);
             _startDate = DateTime.Now;
-        }
-
-        switch (e.KeyCode)
-        {
-            case Keys.Q:
-                e.Handled = true;
-                _isStartMacros = true;
-                uiMacrosHistoryControl.ClearActions();
-                _startDate = DateTime.Now;
-                _isBreak = true;
-                break;
-
-            case Keys.W:
-                e.Handled = true;
-                _isStartMacros = false;
-                _isBreak = true;
-                break;
-
-            case Keys.E:
-                _myActions = uiMacrosHistoryControl.GetActions();
-
-                e.Handled = true;
-                _isBreak = false;
-
-                if (uiKuricaKormRadioButton.Checked
-                    || uiDerevoRadioButton.Checked
-                    || uiKuricaCustomRadioButton.Checked)
-                {
-                    Thread th = new(GoScriptKormKuricam);
-                    th.Start();
-                }
-                else if (twoStepWithShiftRadioButton.Checked)
-                {
-                    Thread th = new(GoScriptTwoStepWithShift);
-                    th.Start();
-                }
-                else if (uiClassicRadioButton.Checked)
-                {
-                    Thread th = new(GoScript);
-                    th.Start();
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
-
-                break;
-
-            case Keys.S:
-                e.Handled = true;
-                _isBreak = true;
-                break;
         }
     }
 
@@ -165,6 +139,59 @@ internal partial class MainForm : Form
         _actHook.KeyUp -= OnKeyUp;
 
         _actHook.Stop();
+    }
+
+    private void ExecuteAction(ControlKey action)
+    {
+        switch (action)
+        {
+            case ControlKey.StartMacros:
+                _isStartMacros = true;
+                uiMacrosHistoryControl.ClearActions();
+                _startDate = DateTime.Now;
+                _isBreak = true;
+                break;
+
+            case ControlKey.StopMacros:
+                _isStartMacros = false;
+                _isBreak = true;
+                break;
+
+            case ControlKey.ExecuteScript:
+                _myActions = uiMacrosHistoryControl.GetActions();
+                _isBreak = false;
+
+                if (uiKuricaKormRadioButton.Checked
+                    || uiDerevoRadioButton.Checked
+                    || uiKuricaCustomRadioButton.Checked)
+                {
+                    Thread th = new(GoScriptKormKuricam);
+                    th.Start();
+                }
+                else if (twoStepWithShiftRadioButton.Checked)
+                {
+                    Thread th = new(GoScriptTwoStepWithShift);
+                    th.Start();
+                }
+                else if (uiClassicRadioButton.Checked)
+                {
+                    Thread th = new(GoScript);
+                    th.Start();
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+                break;
+
+            case ControlKey.BreakAction:
+                _isBreak = true;
+                break;
+
+            default:
+                throw new NotImplementedException($"Действие {action} не реализовано.");
+        }
     }
 
     private void GoScriptTwoStepWithShift()
