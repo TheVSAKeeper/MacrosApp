@@ -22,7 +22,7 @@ internal partial class MainForm : Form
     {
         InitializeComponent();
 
-        _keyBindingsStorage = new JsonKeyBindingsStorage("keybindings.json");
+        _keyBindingsStorage = new JsonKeyBindingsStorage("keybindings");
         _keyBindings = _keyBindingsStorage.Load().ToDictionary();
 
         if (_keyBindings.Count == 0)
@@ -47,6 +47,12 @@ internal partial class MainForm : Form
         base.Dispose(disposing);
         Load -= OnFormLoad;
         FormClosing -= OnFormClosing;
+    }
+
+    private void OnKeyBindingsButtonClicked(object sender, EventArgs e)
+    {
+        KeyBindingsForm form = new(_keyBindings);
+        form.ShowDialog();
     }
 
     private void MouseMoved(object? sender, MouseEventArgs e)
@@ -91,9 +97,9 @@ internal partial class MainForm : Form
     {
         LogWrite("KeyUp", e.KeyData.ToString());
 
-        foreach (KeyValuePair<ControlKey, Keys> action in _keyBindings.Where(action => e.KeyCode == action.Value))
+        foreach ((ControlKey key, Keys _) in _keyBindings.Where(action => e.KeyCode == action.Value))
         {
-            ExecuteAction(action.Key);
+            ExecuteAction(key);
             e.Handled = true;
             return;
         }

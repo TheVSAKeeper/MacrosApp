@@ -11,6 +11,8 @@ public class JsonActionsProvider(JsonSerializerSettings? settings = null) : IAct
 
     private readonly JsonSerializerSettings _settings = settings ?? DefaultSettings;
 
+    public string FileFormat => "json";
+
     public void Save(IEnumerable<MyAction> actions, string path)
     {
         string jsonString = JsonConvert.SerializeObject(actions, _settings);

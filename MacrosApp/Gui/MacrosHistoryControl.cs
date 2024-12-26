@@ -10,6 +10,15 @@ public partial class MacrosHistoryControl : UserControl
     {
         InitializeComponent();
         _actionsProvider = new JsonActionsProvider();
+
+        saveFileDialog1.Title = "Сохранить макросы";
+        saveFileDialog1.Filter = $"Файлы макросов (*.{_actionsProvider.FileFormat})|*.{_actionsProvider.FileFormat}|Все файлы (*.*)|*.*";
+        saveFileDialog1.DefaultExt = _actionsProvider.FileFormat;
+        saveFileDialog1.AddExtension = true;
+
+        openFileDialog1.Title = "Загрузить макросы";
+        openFileDialog1.Filter = $"Файлы макросов (*.{_actionsProvider.FileFormat})|*.{_actionsProvider.FileFormat}|Все файлы (*.*)|*.*";
+        openFileDialog1.DefaultExt = _actionsProvider.FileFormat;
     }
 
     public void AddAction(MyAction action)
@@ -58,7 +67,16 @@ public partial class MacrosHistoryControl : UserControl
         }
 
         List<MyAction> actions = GetActions();
-        _actionsProvider.Save(actions, saveFileDialog1.FileName);
+
+        try
+        {
+            _actionsProvider.Save(actions, saveFileDialog1.FileName);
+            MessageBox.Show($"Макросы успешно сохранены в файл: {saveFileDialog1.FileName}", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show($"Ошибка при сохранении макросов: {exception.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     private void uiLoadButton_Click(object sender, EventArgs e)
@@ -72,7 +90,7 @@ public partial class MacrosHistoryControl : UserControl
 
         if (actions == null)
         {
-            MessageBox.Show("Не удалось загрузить макросы.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("Не удалось загрузить макросы. Пожалуйста, проверьте файл и попробуйте снова.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
 
@@ -82,5 +100,7 @@ public partial class MacrosHistoryControl : UserControl
         {
             AddAction(action);
         }
+
+        MessageBox.Show($"Макросы успешно загружены из файла: {openFileDialog1.FileName}", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 }

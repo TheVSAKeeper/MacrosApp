@@ -2,12 +2,21 @@
 
 namespace MacrosApp.Core;
 
-public class JsonKeyBindingsStorage(string filePath) : IKeyBindingsStorage
+public class JsonKeyBindingsStorage : IKeyBindingsStorage
 {
     private readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         WriteIndented = true,
     };
+
+    private readonly string _filePath;
+
+    public JsonKeyBindingsStorage(string filePath)
+    {
+        _filePath = $"{filePath}.{FileFormat}";
+    }
+
+    public string FileFormat => "json";
 
     public void Save(IReadOnlyDictionary<ControlKey, Keys> keyBindings)
     {
@@ -15,17 +24,17 @@ public class JsonKeyBindingsStorage(string filePath) : IKeyBindingsStorage
             .ToDictionary(x => x.Key.ToString(), x => x.Value.ToString());
 
         string json = JsonSerializer.Serialize(keyBindingsForSave, _jsonSerializerOptions);
-        File.WriteAllText(filePath, json);
+        File.WriteAllText(_filePath, json);
     }
 
     public IReadOnlyDictionary<ControlKey, Keys> Load()
     {
-        if (File.Exists(filePath) == false)
+        if (File.Exists(_filePath) == false)
         {
             return new Dictionary<ControlKey, Keys>();
         }
 
-        string json = File.ReadAllText(filePath);
+        string json = File.ReadAllText(_filePath);
         Dictionary<string, string>? keyBindingsFromFile = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
 
         return keyBindingsFromFile?
