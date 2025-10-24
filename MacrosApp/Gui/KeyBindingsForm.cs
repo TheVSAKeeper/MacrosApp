@@ -39,4 +39,9 @@ public class KeyBindingsForm : Form
         closeButton.Click += (_, _) => Close();
         Controls.Add(closeButton);
     }
+
+    private void InitializeComponent()
+    {
+
+    }
 }
