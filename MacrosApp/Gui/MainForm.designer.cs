@@ -140,13 +140,11 @@ namespace MacrosApp.Gui
             // uiKuricaKormRadioButton
             // 
             uiKuricaKormRadioButton.AutoSize = true;
-            uiKuricaKormRadioButton.Checked = true;
-            uiKuricaKormRadioButton.Location = new Point(72, 134);
+            uiKuricaKormRadioButton.Location = new Point(67, 137);
             uiKuricaKormRadioButton.Name = "uiKuricaKormRadioButton";
             uiKuricaKormRadioButton.RightToLeft = RightToLeft.Yes;
             uiKuricaKormRadioButton.Size = new Size(104, 19);
             uiKuricaKormRadioButton.TabIndex = 9;
-            uiKuricaKormRadioButton.TabStop = true;
             uiKuricaKormRadioButton.Text = "корм лебедям";
             uiKuricaKormRadioButton.UseVisualStyleBackColor = true;
             // 
@@ -276,11 +274,13 @@ namespace MacrosApp.Gui
             // uiClassicRadioButton
             // 
             uiClassicRadioButton.AutoSize = true;
-            uiClassicRadioButton.Location = new Point(5, 209);
+            uiClassicRadioButton.Checked = true;
+            uiClassicRadioButton.Location = new Point(8, 208);
             uiClassicRadioButton.Name = "uiClassicRadioButton";
             uiClassicRadioButton.RightToLeft = RightToLeft.Yes;
             uiClassicRadioButton.Size = new Size(163, 19);
             uiClassicRadioButton.TabIndex = 25;
+            uiClassicRadioButton.TabStop = true;
             uiClassicRadioButton.Text = "повторять без смещения";
             uiClassicRadioButton.UseVisualStyleBackColor = true;
             // 
@@ -316,7 +316,7 @@ namespace MacrosApp.Gui
             // uiDerevoRadioButton
             // 
             uiDerevoRadioButton.AutoSize = true;
-            uiDerevoRadioButton.Location = new Point(109, 111);
+            uiDerevoRadioButton.Location = new Point(103, 112);
             uiDerevoRadioButton.Name = "uiDerevoRadioButton";
             uiDerevoRadioButton.RightToLeft = RightToLeft.Yes;
             uiDerevoRadioButton.Size = new Size(68, 19);
